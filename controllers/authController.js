@@ -14,6 +14,12 @@ exports.register = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Please fill all fields.' });
     }
+    const usernameRegex = /^[A-Za-z]+$/;
+    if (!usernameRegex.test(name)) {
+      return res.status(400).json({
+        error: "Username must contain English letters only"
+      });
+    }
     const gmailRegex = /^[A-Za-z0-9._%+-]+@gmail\.com$/;
     const allDigitsRegex = /^\d{8,}@gmail\.com$/;
 
@@ -23,14 +29,14 @@ exports.register = async (req, res) => {
       });
     }
 
-    
+
     if (allDigitsRegex.test(email)) {
       return res.status(400).json({
         error: "Email cannot be only numbers if it has 8 or more digits before @"
       });
     }
 
-  
+
     if (!gmailRegex.test(email)) {
       return res.status(400).json({
         error: "Email must be a valid Gmail address (e.g. name@gmail.com)"
