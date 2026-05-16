@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const connectDB = require('../config/database');
 // Register
 exports.register = async (req, res) => {
-  
+
   try {
     await connectDB();
     const { name, email, password } = req.body;
@@ -14,10 +14,27 @@ exports.register = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Please fill all fields.' });
     }
-      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const gmailRegex = /^[A-Za-z0-9._%+-]+@gmail\.com$/;
+    const allDigitsRegex = /^\d{8,}@gmail\.com$/;
+
+    if (!email.endsWith("@gmail.com")) {
+      return res.status(400).json({
+        error: "Email must end with @gmail.com"
+      });
+    }
+
     
+    if (allDigitsRegex.test(email)) {
+      return res.status(400).json({
+        error: "Email cannot be only numbers if it has 8 or more digits before @"
+      });
+    }
+
+  
     if (!gmailRegex.test(email)) {
-      return res.status(400).json({ error: 'Email must be a valid Gmail address (e.g., name@gmail.com).' });
+      return res.status(400).json({
+        error: "Email must be a valid Gmail address (e.g. name@gmail.com)"
+      });
     }
     if (password.length < 8) {
       return res.status(400).json({ error: 'Password must be at least 8 characters.' });
@@ -36,8 +53,8 @@ exports.register = async (req, res) => {
 
     await sendVerificationEmail(email, verificationCode);
 
-    res.status(201).json({ 
-      message: 'User registered successfully! Verification code sent to email.' 
+    res.status(201).json({
+      message: 'User registered successfully! Verification code sent to email.'
     });
   } catch (error) {
     if (error.code === 11000) {
@@ -103,12 +120,12 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { user_id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '30d' }  
+      { expiresIn: '30d' }
     );
 
     res.status(200).json({
       message: 'Login successful!',
-      token: token,  
+      token: token,
       user: {
         user_id: user._id,
         name: user.name,
@@ -158,16 +175,16 @@ exports.resendVerificationCode = async (req, res) => {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    
-    if (user.is_verified) { 
+
+    if (user.is_verified) {
       return res.status(400).json({ message: 'Email is already verified.' });
     }
 
     const verificationCode = generateVerificationCode();
     const verificationCodeExpiry = new Date(Date.now() + 3 * 60 * 1000);
 
-    user.verification_code = verificationCode; 
-    user.verification_code_expiry = verificationCodeExpiry;  
+    user.verification_code = verificationCode;
+    user.verification_code_expiry = verificationCodeExpiry;
     await user.save();
 
     await sendVerificationEmail(email, verificationCode);
@@ -197,9 +214,9 @@ exports.forgotPassword = async (req, res) => {
     const resetCode = generateVerificationCode();
     const resetCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-   
+
     user.verification_code = resetCode;
-    user.verification_code_expiry = resetCodeExpiry; 
+    user.verification_code_expiry = resetCodeExpiry;
     await user.save();
 
     await sendVerificationEmail(email, resetCode);
@@ -226,11 +243,11 @@ exports.verifyResetCode = async (req, res) => {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    if (new Date() > user.verification_code_expiry) {  
+    if (new Date() > user.verification_code_expiry) {
       return res.status(400).json({ error: 'Reset code has expired.' });
     }
 
-    if (reset_code !== user.verification_code) { 
+    if (reset_code !== user.verification_code) {
       return res.status(400).json({ error: 'Invalid reset code.' });
     }
 
@@ -261,8 +278,8 @@ exports.resetPassword = async (req, res) => {
     }
 
     user.password = new_password;
-    user.verification_code = null;  
-    user.verification_code_expiry = null;  
+    user.verification_code = null;
+    user.verification_code_expiry = null;
     await user.save();
 
     res.status(200).json({ message: 'Password reset successfully!' });
