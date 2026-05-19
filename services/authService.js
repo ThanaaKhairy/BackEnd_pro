@@ -132,7 +132,7 @@ const forgotPassword = async (email) => {
   user.verification_code_expiry = resetCodeExpiry;
   await user.save();
 
-  sendVerificationEmail(email, resetCode).catch(err => {
+  await sendVerificationEmail(email, resetCode).catch(err => {
     console.error('Email sending failed:', err.message);
   });
 
