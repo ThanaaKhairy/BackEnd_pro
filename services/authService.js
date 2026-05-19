@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const generateVerificationCode = require('../utils/generateCode');
 const { generateToken } = require('../utils/jwt');
-const { sendVerificationEmail } = require('../services/emailService');
+const { sendVerificationEmail } = require('../utils/emailService');
 
 //  Register user service
 const registerUser = async (userData) => {
