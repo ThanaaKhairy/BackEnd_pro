@@ -4,7 +4,7 @@ const { z } = require('zod');
 const registerSchema = z.object({
   name: z.string()
     .min(1, 'Name is required')
-    .regex(/^[A-Za-z]+$/, 'Name must contain English letters only'),
+    .regex(/^[A-Za-z ]+$/, 'Name must contain English letters only'),
   
   email: z.string()
     .email('Please enter a valid email')
