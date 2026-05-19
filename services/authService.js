@@ -17,7 +17,7 @@ const registerUser = async (userData) => {
   });
 
   // Send email (don't await to avoid blocking)
-  sendVerificationEmail(userData.email, verificationCode).catch(err => {
+  await sendVerificationEmail(userData.email, verificationCode).catch(err => {
     console.error('Email sending failed:', err.message);
   });
 
@@ -110,7 +110,7 @@ const resendVerificationCode = async (email) => {
   user.verification_code_expiry = verificationCodeExpiry;
   await user.save();
 
-  sendVerificationEmail(email, verificationCode).catch(err => {
+  await sendVerificationEmail(email, verificationCode).catch(err => {
     console.error('Email sending failed:', err.message);
   });
 
