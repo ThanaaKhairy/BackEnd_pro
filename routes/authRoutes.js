@@ -14,7 +14,6 @@ router.post('/login', authController.login);
 
 // Protected routes
 router.post('/logout', protect, authController.logout);
-router.get('/profile', protect, authController.getProfile);
 
 // Admin only routes
 router.get('/admin/users', protect, authorize('Admin'), (req, res) => {

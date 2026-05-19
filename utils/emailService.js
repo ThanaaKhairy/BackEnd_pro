@@ -1,31 +1,31 @@
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_ADDRESS,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.EMAIL_ADDRESS,
+//     pass: process.env.EMAIL_PASSWORD
+//   }
+// });
 
-const sendVerificationEmail = async (email, verificationCode) => {
-  const mailOptions = {
-    from: process.env.EMAIL_ADDRESS,
-    to: email,
-    subject: 'OTP Verification',
-    text: `  Hello,
+// const sendVerificationEmail = async (email, verificationCode) => {
+//   const mailOptions = {
+//     from: process.env.EMAIL_ADDRESS,
+//     to: email,
+//     subject: 'OTP Verification',
+//     text: `  Hello,
 
-        Your verification code is: ${verificationCode}
+//         Your verification code is: ${verificationCode}
 
-        Please enter this code to complete your request.  
+//         Please enter this code to complete your request.  
 
-        This code is valid for 3 minutes.
+//         This code is valid for 3 minutes.
 
-        Thank you,  
-        Land Choice Team`
-  };
+//         Thank you,  
+//         Land Choice Team`
+//   };
 
-  await transporter.sendMail(mailOptions);
-};
+//   await transporter.sendMail(mailOptions);
+// };
 
-module.exports = { sendVerificationEmail };
+// module.exports = { sendVerificationEmail };
