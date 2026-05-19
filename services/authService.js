@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const generateVerificationCode = require('../utils/generateCode');
 const { generateToken } = require('../utils/jwt');
-const { sendVerificationEmail } = require('./emailService');
+const { sendVerificationEmail } = require('../services/emailService');
 
 //  Register user service
 const registerUser = async (userData) => {
@@ -126,7 +126,7 @@ const forgotPassword = async (email) => {
   }
 
   const resetCode = generateVerificationCode();
-  const resetCodeExpiry = new Date(Date.now() + 3 * 60 * 1000);
+  const resetCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
   user.verification_code = resetCode;
   user.verification_code_expiry = resetCodeExpiry;
