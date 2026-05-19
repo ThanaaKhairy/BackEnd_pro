@@ -1,5 +1,4 @@
 
-const connectDB = require('../config/database');
 const authService = require('../services/authService');
 const {
   registerSchema,
@@ -23,7 +22,6 @@ const validate = (schema, data) => {
 // Register
 exports.register = async (req, res) => {
   try {
-    await connectDB();
     const validatedData = validate(registerSchema, req.body);
     const result = await authService.registerUser(validatedData);
     res.status(201).json(result);
@@ -38,7 +36,6 @@ exports.register = async (req, res) => {
 // Verify Code
 exports.verifyCode = async (req, res) => {
   try {
-    await connectDB();
     const { email, code } = validate(verifyCodeSchema, req.body);
     const result = await authService.verifyEmail(email, code);
     res.status(200).json(result);
@@ -50,7 +47,6 @@ exports.verifyCode = async (req, res) => {
 // Login
 exports.login = async (req, res) => {
   try {
-    await connectDB();
     const { email, password } = validate(loginSchema, req.body);
     const result = await authService.loginUser(email, password);
     res.status(200).json(result);
@@ -67,7 +63,6 @@ exports.logout = async (req, res) => {
 // Get Profile
 exports.getProfile = async (req, res) => {
   try {
-    await connectDB();
     const result = await authService.getProfile(req.user.user_id);
     res.status(200).json(result);
   } catch (error) {
@@ -78,7 +73,6 @@ exports.getProfile = async (req, res) => {
 // Resend verification code
 exports.resendVerificationCode = async (req, res) => {
   try {
-    await connectDB();
     const { email } = validate(emailSchema, req.body);
     const result = await authService.resendVerificationCode(email);
     res.status(200).json(result);
@@ -90,7 +84,6 @@ exports.resendVerificationCode = async (req, res) => {
 // Forgot Password
 exports.forgotPassword = async (req, res) => {
   try {
-    await connectDB();
     const { email } = validate(emailSchema, req.body);
     const result = await authService.forgotPassword(email);
     res.status(200).json(result);
@@ -102,7 +95,6 @@ exports.forgotPassword = async (req, res) => {
 // Verify Reset Code
 exports.verifyResetCode = async (req, res) => {
   try {
-    await connectDB();
     const { email, reset_code } = validate(verifyResetCodeSchema, req.body);
     const result = await authService.verifyResetCode(email, reset_code);
     res.status(200).json(result);
@@ -114,7 +106,6 @@ exports.verifyResetCode = async (req, res) => {
 // Reset Password
 exports.resetPassword = async (req, res) => {
   try {
-    await connectDB();
     const { email, new_password } = validate(resetPasswordSchema, req.body);
     const result = await authService.resetPassword(email, new_password);
     res.status(200).json(result);
