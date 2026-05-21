@@ -3,13 +3,13 @@ const express = require('express');
 const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const countryRoutes = require('./routes/countryRoutes');  
-
+const cors = require('cors');
 const app = express();
 
 // Connect to database
 connectDB();
+app.use(cors());
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
