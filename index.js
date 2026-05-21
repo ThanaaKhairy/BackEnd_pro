@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
+const countryRoutes = require('./routes/countryRoutes');  
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/', authRoutes);
+app.use('/countries', countryRoutes);  
 
 
 

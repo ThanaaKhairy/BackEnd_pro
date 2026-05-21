@@ -32,7 +32,7 @@ const verifyEmail = async (email, code) => {
     throw new Error('User not found');
   }
 
-  if (new Date() > user.verification_code_expiry) {
+  if (Date.now() > new Date(user.verification_code_expiry).getTime()) {
     throw new Error('Verification code has expired');
   }
 
@@ -66,7 +66,7 @@ const loginUser = async (email, password) => {
     throw new Error('Email not verified');
   }
 
-  const token = generateToken(user._id, user.email, user.role);
+const token = generateToken(user._id, user.email, user.name, user.role);
 
   return {
     message: 'Login successful!',
@@ -147,7 +147,7 @@ const verifyResetCode = async (email, resetCode) => {
     throw new Error('User not found');
   }
 
-  if (new Date() > user.verification_code_expiry) {
+  if (Date.now() > new Date(user.verification_code_expiry).getTime()) {
     throw new Error('Reset code has expired');
   }
 

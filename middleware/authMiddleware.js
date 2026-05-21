@@ -1,6 +1,6 @@
 const { verifyToken } = require('../utils/jwt');
 
-// middleware/authMiddleware.js (نفسه)
+// middleware/authMiddleware.js 
 const protect = async (req, res, next) => {
   let token;
 
