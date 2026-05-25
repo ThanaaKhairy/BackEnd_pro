@@ -26,6 +26,11 @@ exports.getAllCountries = async (req, res) => {
 exports.getCountryById = async (req, res) => {
   try {
     const { country_id } = req.query;
+    if (!country_id) {
+      return res.status(400).json({
+        error: 'Country ID is required'
+      });
+    }
     const country = await countryService.getCountryById(country_id);
     res.status(200).json({ country });
   } catch (error) {
@@ -40,6 +45,11 @@ exports.getCountryById = async (req, res) => {
 exports.getCountryByName = async (req, res) => {
   try {
     const { name } = req.query;
+    if (!name) {
+      return res.status(400).json({
+        error: 'Country name is required'
+      });
+    }
     const country = await countryService.getCountryByName(name);
     res.status(200).json({ country });
   } catch (error) {
@@ -55,22 +65,22 @@ exports.getCountryByName = async (req, res) => {
 //  Add new country 
 exports.addCountry = async (req, res) => {
   try {
-    
+
     //  Validate request body
     const validatedData = validate(countrySchema, req.body);
-    
+
     const country = await countryService.addCountry(validatedData);
-    res.status(201).json({ 
+    res.status(201).json({
       message: 'Country added successfully!',
-      country 
+      country
     });
   } catch (error) {
     if (error.message.includes('already exists')) {
       return res.status(400).json({ error: error.message });
     }
-    if (error.message.includes('ID must contain') || 
-        error.message.includes('Country code must be') ||
-        error.message.includes('Color must be')) {
+    if (error.message.includes('ID must contain') ||
+      error.message.includes('Country code must be') ||
+      error.message.includes('Color must be')) {
       return res.status(400).json({ error: error.message });
     }
     res.status(500).json({ error: error.message });
@@ -81,14 +91,18 @@ exports.addCountry = async (req, res) => {
 exports.updateCountry = async (req, res) => {
   try {
     const { country_id } = req.query;
-    
+    if (!country_id) {
+      return res.status(400).json({
+        error: 'Country ID is required'
+      });
+    }
     //  Validate request body
     const validatedData = validate(updateCountrySchema, req.body);
-    
+
     const country = await countryService.updateCountry(country_id, validatedData);
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Country updated successfully!',
-      country 
+      country
     });
   } catch (error) {
     if (error.message === 'Country not found') {
@@ -108,6 +122,11 @@ exports.updateCountry = async (req, res) => {
 exports.deleteCountry = async (req, res) => {
   try {
     const { country_id } = req.query;
+    if (!country_id) {
+      return res.status(400).json({
+        error: 'Country ID is required'
+      });
+    }
     const result = await countryService.deleteCountry(country_id);
     res.status(200).json(result);
   } catch (error) {
@@ -122,15 +141,15 @@ exports.deleteCountry = async (req, res) => {
 exports.deleteCountryByName = async (req, res) => {
   try {
     const { name } = req.query;
-    
+
     if (!name) {
       return res.status(400).json({ error: 'Please provide country name' });
     }
-    
+
     if (typeof name !== 'string' || name.trim().length < 2) {
       return res.status(400).json({ error: 'Country name must be at least 2 characters' });
     }
-    
+
     const result = await countryService.deleteCountryByName(name);
     res.status(200).json(result);
   } catch (error) {

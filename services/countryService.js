@@ -1,4 +1,6 @@
 const Country = require('../models/Country');
+const escapeRegex = (text) =>
+  text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Get all countries
 const getAllCountries = async () => {
@@ -16,13 +18,16 @@ const getCountryById = async (id) => {
 };
 
 // Get country by name
+
 const getCountryByName = async (name) => {
-  const country = await Country.findOne({ 
-    country: { $regex: new RegExp(`^${name}$`, 'i') }
+  const safeName = escapeRegex(name);
+
+  const country = await Country.findOne({
+    country: { $regex: new RegExp(`^${safeName}$`, 'i') }
   });
-  if (!country) {
-    throw new Error('Country not found');
-  }
+
+  if (!country) throw new Error('Country not found');
+
   return country;
 };
 
@@ -87,6 +92,8 @@ const deleteCountry = async (id) => {
 
 // Delete country by name 
 const deleteCountryByName = async (name) => {
+    const safeName = escapeRegex(name);
+
   const country = await Country.findOneAndDelete({ 
     country: { $regex: new RegExp(`^${name}$`, 'i') }
   });

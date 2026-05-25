@@ -14,7 +14,7 @@ const countrySchema = z.object({
   countryCode: z.string()
     .min(1, 'Country code is required')
     .length(2, 'Country code must be exactly 2 characters')
-    .regex(/^[A-Z]+$/, 'Country code must be uppercase letters only'),
+    .regex(/^[A-Z]{2}$/, 'Country code must be uppercase letters only'),
   
   visaName: z.string()
     .min(1, 'Visa name is required'),
@@ -96,16 +96,8 @@ const countrySchema = z.object({
 //  Update country schema 
 const updateCountrySchema = countrySchema.partial();
 
-//  Filter query schema
-const filterQuerySchema = z.object({
-  difficulty: z.enum(['Easy', 'Medium', 'Hard']).optional(),
-  popular: z.enum(['true', 'false']).optional(),
-  featured: z.enum(['true', 'false']).optional(),
-  minIncome: z.string().regex(/^\d+$/, 'minIncome must be a number').optional()
-});
 
 module.exports = {
   countrySchema,
   updateCountrySchema,
-  filterQuerySchema
 };
