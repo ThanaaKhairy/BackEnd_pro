@@ -3,13 +3,13 @@ const User = require('../models/User');
 // Fields allowed to return
 const userFields = 'name email role';
 
-// ✅ Get all users
+//  Get all users
 const getAllUsers = async () => {
   const users = await User.find().select(userFields);
   return users;
 };
 
-// ✅ Get user by email
+//  Get user by email
 const getUserByEmail = async (email) => {
   const user = await User.findOne({ email }).select(userFields);
 
@@ -20,7 +20,7 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
-// ✅ Promote user to admin
+//  Promote user to admin
 const promoteToAdmin = async (email) => {
   const user = await User.findOne({ email });
 
@@ -45,7 +45,7 @@ const promoteToAdmin = async (email) => {
   };
 };
 
-// ✅ Demote admin to user
+//  Demote admin to user
 const demoteToUser = async (email, requesterId) => {
 
   // Prevent demoting main admin
@@ -84,7 +84,7 @@ const demoteToUser = async (email, requesterId) => {
   };
 };
 
-// ✅ Delete user by email
+//  Delete user by email
 const deleteUserByEmail = async (email, requesterId) => {
 
   // Prevent deleting main admin
@@ -120,7 +120,7 @@ const deleteUserByEmail = async (email, requesterId) => {
   };
 };
 
-// ✅ Get all admins
+//  Get all admins
 const getAllAdmins = async () => {
   const admins = await User.find({
     role: 'Admin'
@@ -129,7 +129,7 @@ const getAllAdmins = async () => {
   return admins;
 };
 
-// ✅ Get all regular users
+//  Get all regular users
 const getAllRegularUsers = async () => {
   const users = await User.find({
     role: 'user'

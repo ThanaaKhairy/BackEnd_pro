@@ -46,7 +46,7 @@ const validateEmail = (email) => {
   return normalizedEmail;
 };
 
-// ✅ Get all users
+//  Get all users
 exports.getAllUsers = async (req, res) => {
   try {
 
@@ -66,7 +66,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// ✅ Get user by email
+//  Get user by email
 exports.getUserByEmail = async (
   req,
   res
@@ -105,7 +105,7 @@ exports.getUserByEmail = async (
   }
 };
 
-// ✅ Promote user to admin
+//  Promote user to admin
 exports.promoteToAdmin =
   async (req, res) => {
     try {
@@ -149,7 +149,7 @@ exports.promoteToAdmin =
     }
   };
 
-// ✅ Demote admin to user
+//  Demote admin to user
 exports.demoteToUser =
   async (req, res) => {
     try {
@@ -193,7 +193,7 @@ exports.demoteToUser =
     }
   };
 
-// ✅ Delete user
+// Delete user
 exports.deleteUserByEmail =
   async (req, res) => {
     try {
@@ -237,7 +237,7 @@ exports.deleteUserByEmail =
     }
   };
 
-// ✅ Get all admins
+//  Get all admins
 exports.getAllAdmins =
   async (req, res) => {
     try {
@@ -259,7 +259,7 @@ exports.getAllAdmins =
     }
   };
 
-// ✅ Get all regular users
+//  Get all regular users
 exports.getAllRegularUsers =
   async (req, res) => {
     try {
