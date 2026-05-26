@@ -3,6 +3,8 @@ const express = require('express');
 const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const countryRoutes = require('./routes/countryRoutes');  
+const adminRoutes = require('./routes/adminRoutes');  
+
 const cors = require('cors');
 const app = express();
 
@@ -16,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/', authRoutes);
 app.use('/countries', countryRoutes);  
+app.use('/admin', adminRoutes);  
 
 
 
