@@ -1,39 +1,41 @@
 const User = require('../models/User');
 
-//  Get all users
+// Fields allowed to return
+const userFields = 'name email role';
+
+// ✅ Get all users
 const getAllUsers = async () => {
-  const users = await User.find().select('-password');
+  const users = await User.find().select(userFields);
   return users;
 };
 
-//  Get user by email
+// ✅ Get user by email
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email }).select('-password');
+  const user = await User.findOne({ email }).select(userFields);
+
   if (!user) {
     throw new Error('User not found');
   }
+
   return user;
 };
 
-//  Promote user to admin
-const promoteToAdmin = async (email, requesterId) => {
-  // Find the user
+// ✅ Promote user to admin
+const promoteToAdmin = async (email) => {
   const user = await User.findOne({ email });
-  
+
   if (!user) {
     throw new Error('User not found');
   }
-  
-  // Check if user is already an admin
+
   if (user.role === 'Admin') {
     throw new Error('User is already an admin');
   }
-  
-  // Update role to Admin
+
   user.role = 'Admin';
   await user.save();
-  
-  return { 
+
+  return {
     message: `User '${user.email}' promoted to admin successfully!`,
     user: {
       name: user.name,
@@ -43,33 +45,36 @@ const promoteToAdmin = async (email, requesterId) => {
   };
 };
 
-//  Demote admin to user
+// ✅ Demote admin to user
 const demoteToUser = async (email, requesterId) => {
-  // Find the user
-    if (email.toLowerCase() === process.env.EMAIL_ADDRESS) {
+
+  // Prevent demoting main admin
+  if (
+    email.toLowerCase() ===
+    process.env.EMAIL_ADDRESS.toLowerCase()
+  ) {
     throw new Error('Cannot demote the main admin account');
   }
+
   const user = await User.findOne({ email });
-  
+
   if (!user) {
     throw new Error('User not found');
   }
-  
-  // Check if user is actually an admin
+
   if (user.role !== 'Admin') {
     throw new Error('User is not an admin');
   }
-  
-  // Prevent self-demotion (cannot demote your own account)
+
+  // Prevent self-demotion
   if (user._id.toString() === requesterId) {
     throw new Error('You cannot demote your own account');
   }
-  
-  // Update role to user
+
   user.role = 'user';
   await user.save();
-  
-  return { 
+
+  return {
     message: `Admin '${user.email}' demoted to regular user successfully!`,
     user: {
       name: user.name,
@@ -79,42 +84,57 @@ const demoteToUser = async (email, requesterId) => {
   };
 };
 
-//  Delete user by email
+// ✅ Delete user by email
 const deleteUserByEmail = async (email, requesterId) => {
-  // Find the user
+
+  // Prevent deleting main admin
+  if (
+    email.toLowerCase() ===
+    process.env.EMAIL_ADDRESS.toLowerCase()
+  ) {
+    throw new Error('Cannot delete the main admin account');
+  }
+
   const user = await User.findOne({ email });
-  
+
   if (!user) {
     throw new Error('User not found');
   }
-  
-  // Prevent self-deletion
+
+  // Prevent self deletion
   if (user._id.toString() === requesterId) {
     throw new Error('You cannot delete your own account');
   }
-  
-  // Cannot delete an admin directly (must demote to user first)
+
+  // Must demote admin first
   if (user.role === 'Admin') {
-    throw new Error('Cannot delete an admin directly. Please demote to user first, then delete.');
+    throw new Error(
+      'Cannot delete an admin directly. Please demote to user first, then delete.'
+    );
   }
-  
-  // Delete user from database
+
   await User.findByIdAndDelete(user._id);
-  
-  return { 
+
+  return {
     message: `User '${user.email}' has been deleted successfully!`
   };
 };
 
-//  Get all admins
+// ✅ Get all admins
 const getAllAdmins = async () => {
-  const admins = await User.find({ role: 'Admin' }).select('-password');
+  const admins = await User.find({
+    role: 'Admin'
+  }).select(userFields);
+
   return admins;
 };
 
-//  Get all regular users (not admins)
+// ✅ Get all regular users
 const getAllRegularUsers = async () => {
-  const users = await User.find({ role: 'user' }).select('-password');
+  const users = await User.find({
+    role: 'user'
+  }).select(userFields);
+
   return users;
 };
 
