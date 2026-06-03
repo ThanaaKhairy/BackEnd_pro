@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 const sendVerificationEmail = async (email, verificationCode) => {
   const mailOptions = {
-    from: process.env.EMAIL_ADDRESS,
+    from: `"LandChoice" <${process.env.EMAIL_ADDRESS}>`,
     to: email,
     subject: 'OTP Verification',
     text: `  Hello,
