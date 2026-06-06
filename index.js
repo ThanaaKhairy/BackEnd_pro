@@ -4,6 +4,9 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const countryRoutes = require('./routes/countryRoutes');  
 const adminRoutes = require('./routes/adminRoutes');  
+const postRoutes = require('./routes/postRoutes');          
+const advertisementRoutes = require('./routes/advertisementRoutes');
+
 
 const cors = require('cors');
 const app = express();
@@ -19,7 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/', authRoutes);
 app.use('/countries', countryRoutes);  
 app.use('/admin', adminRoutes);  
-
+app.use('/posts', postRoutes);               
+app.use('/ads', advertisementRoutes); 
 
 
 
