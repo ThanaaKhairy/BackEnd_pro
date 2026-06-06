@@ -12,7 +12,7 @@ async function connectDB() {
   // }
 
   // if (!cached.promise) {
-    cached.promise = mongoose.connect(process.env.MONGODB_URI).then((mongoose) => {
+    cached.promise = mongoose.connect(process.env.MONGODB_URI,{dbName:'Digi_GP'}).then((mongoose) => {
       console.log('MongoDB Connected');
       return mongoose;
     });
