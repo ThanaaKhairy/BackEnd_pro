@@ -129,6 +129,10 @@ const getErrorResponse = (error, entityName = 'Item') => {
       status: 400,
       getMessage: () => 'Invalid date range. The start date must be earlier than the end date.'
     },
+        'Start date cannot be in the past': {
+      status: 400,
+      getMessage: () => 'Invalid date. The start date and end date must not be in the past.'
+    },
     // URL errors
     'Invalid URL': {
       status: 400,

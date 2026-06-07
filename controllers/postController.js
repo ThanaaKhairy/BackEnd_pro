@@ -28,7 +28,6 @@ const validate = (schema, data) => {
 // Get all posts
 exports.getAllPosts = async (req, res) => {
   try {
-    await connectDB();
     const posts = await postService.getAllPosts();
     res.status(200).json({
       success: true,
@@ -44,7 +43,6 @@ exports.getAllPosts = async (req, res) => {
 // Get single post by ID
 exports.getPostById = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     
     const { id } = req.query;
@@ -62,7 +60,6 @@ exports.getPostById = async (req, res) => {
 // Get posts by user id
 exports.getPostsByUser = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['userId']);
     
     const { userId } = req.query;
@@ -83,7 +80,6 @@ exports.getPostsByUser = async (req, res) => {
 // Create new post
 exports.createPost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredFields(req.body, ['title', 'content']);
     
     const validatedData = validate(createPostSchema, req.body);
@@ -102,7 +98,6 @@ exports.createPost = async (req, res) => {
 // Update post
 exports.updatePost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     validateUpdateData(req.body, ['title', 'content']);
     
@@ -123,7 +118,6 @@ exports.updatePost = async (req, res) => {
 // Delete post (own post)
 exports.deletePost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     
     const { id } = req.query;
@@ -141,7 +135,6 @@ exports.deletePost = async (req, res) => {
 // Like a post
 exports.likePost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     
     const { id } = req.query;
@@ -160,7 +153,6 @@ exports.likePost = async (req, res) => {
 // Unlike a post
 exports.unlikePost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     
     const { id } = req.query;
@@ -179,7 +171,6 @@ exports.unlikePost = async (req, res) => {
 // Add comment
 exports.addComment = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     validateRequiredFields(req.body, ['text']);
     
@@ -200,7 +191,6 @@ exports.addComment = async (req, res) => {
 // Delete comment
 exports.deleteComment = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id', 'commentId']);
     
     const { id, commentId } = req.query;
@@ -210,7 +200,7 @@ exports.deleteComment = async (req, res) => {
       message: result.message
     });
   } catch (error) {
-    const { status, message, details } = getErrorResponse(error, 'Post');
+    const { status, message, details } = getErrorResponse(error, 'comment');
     res.status(status).json({ error: message, ...(details && { details }) });
   }
 };
@@ -220,7 +210,6 @@ exports.deleteComment = async (req, res) => {
 // Delete any post (Admin only)
 exports.deleteAnyPost = async (req, res) => {
   try {
-    await connectDB();
     validateRequiredQuery(req.query, ['id']);
     
     const { id } = req.query;
