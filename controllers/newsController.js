@@ -5,13 +5,15 @@ const BASE_URL = 'https://newsapi.org/v2';
 
 const getEverything = async (req, res) => {
   try {
-    const { pageSize = 100 } = req.query;
+    const { pageSize = 50, country = 'travel', query } = req.query;
 
-    //  No filters - get everything
+    // استخدم query من الفرونت لو موجود
+    const searchQuery = query || `"${country}" AND (travel OR visa OR passport OR embassy OR "entry requirements")`;
+
     const response = await axios.get(`${BASE_URL}/everything`, {
       params: {
-        q: 'travel',               
-        pageSize: pageSize,
+        q: searchQuery,
+        pageSize,
         apiKey: NEWS_API_KEY,
         language: 'en',
         sortBy: 'publishedAt',
@@ -23,8 +25,10 @@ const getEverything = async (req, res) => {
       articles: response.data.articles,
       totalResults: response.data.totalResults,
     });
+
   } catch (error) {
     console.error('NewsAPI Error:', error.response?.data || error.message);
+
     res.status(error.response?.status || 500).json({
       success: false,
       message: 'Failed to fetch news',
@@ -32,4 +36,5 @@ const getEverything = async (req, res) => {
     });
   }
 };
+
 module.exports = { getEverything };
