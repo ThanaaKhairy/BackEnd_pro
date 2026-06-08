@@ -7,7 +7,6 @@ const getEverything = async (req, res) => {
   try {
     const { pageSize = 50, country = 'travel', query } = req.query;
 
-    // استخدم query من الفرونت لو موجود
     const searchQuery = query || `"${country}" AND (travel OR visa OR passport OR embassy OR "entry requirements")`;
 
     const response = await axios.get(`${BASE_URL}/everything`, {
