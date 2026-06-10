@@ -35,6 +35,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
+
+app.get("/",(req,res)=>{
+  res.send("<h1>Wellcom to landChoice</h1>")
+})
 // module.exports = app;
 
 // // Start server
