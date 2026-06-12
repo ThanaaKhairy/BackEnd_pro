@@ -7,6 +7,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const postRoutes = require('./routes/postRoutes');          
 const advertisementRoutes = require('./routes/advertisementRoutes');
 const newsRoutes = require('./routes/newsRoutes');
+const { notFound } = require('./middleware/errorMiddleware');
 
 
 const cors = require('cors');
@@ -26,6 +27,7 @@ app.use('/admin', adminRoutes);
 app.use('/posts', postRoutes);               
 app.use('/ads', advertisementRoutes); 
 app.use('/news', newsRoutes);
+app.use(notFound);
 
 
 
