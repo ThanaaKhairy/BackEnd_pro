@@ -23,9 +23,9 @@ const formatAdRequestEmail = (data) => {
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
-        h2 { color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px; }
+        h2 { color: #6C8FD9; border-bottom: 2px solid #6C8FD9; padding-bottom: 10px; }
         .field { margin-bottom: 15px; }
-        .label { font-weight: bold; color: #2563eb; margin-bottom: 5px; }
+        .label { font-weight: bold; color: #6C8FD9; margin-bottom: 5px; }
         .value { background: #f3f4f6; padding: 10px; border-radius: 5px; margin-top: 5px; }
         .footer { margin-top: 20px; font-size: 12px; color: #777; text-align: center; }
       </style>
